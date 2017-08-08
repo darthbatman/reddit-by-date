@@ -3,7 +3,7 @@ Node.js API to get top Reddit posts by date
 
 [![https://nodei.co/npm/reddit-by-date.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/reddit-by-date.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/reddit-by-date)
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/darthbatman/billboard-top-100)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/darthbatman/reddit-by-date)
 
 
 # install
