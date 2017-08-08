@@ -1,0 +1,33 @@
+{
+  "name": "reddit-by-date",
+  "version": "1.0.0",
+  "description": "Node.js API to get top Reddit posts by date",
+  "main": "reddit-by-date.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "request": "^2.81.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darthbatman/reddit-by-date.git"
+  },
+  "keywords": [
+    "reddit",
+    "date",
+    "search",
+    "news",
+    "posts"
+  ],
+  "author": "Rishi Masand",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darthbatman/reddit-by-date/issues"
+  },
+  "homepage": "https://github.com/darthbatman/reddit-by-date#readme"
+}
