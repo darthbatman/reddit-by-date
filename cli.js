@@ -1,55 +1,52 @@
-var request = require('request');
+var request = require('./requester.js');
+var month, day, year, subreddit, args, split, startDate, endDate, stringArray, options;
 
-var month = 0;
+month = 0;
+day = 0;
+year = 0;
+subreddit = "";
+args = process.argv;
 
-var day = 0;
-
-var year = 0;
-
-var subreddit = "";
-
-if (process.argv.indexOf('-d') != -1) {
-
-	month = process.argv[process.argv.indexOf('-d') + 1].split('-')[0];
-
-	day = process.argv[process.argv.indexOf('-d') + 1].split('-')[1];
-
-	year = process.argv[process.argv.indexOf('-d') + 1].split('-')[2];
-
-}
-else {
-
-	console.log("No date detected. Please use the -d flag to provide a date.");
-
-	process.exit();
-
+if (args.indexOf('-d') > -1) {
+	split = args[args.indexOf('-d') + 1].split('-');
+	month = split[0];
+	day = split[1];
+	year = split[2];
+} else {
+	throw new Error("No date detected. Please use the -d flag to provide a date.");
 }
 
-if (process.argv.indexOf('-r') != -1) {
-
-	subreddit = process.argv[process.argv.indexOf('-r') + 1];
-
-}
-else {
-
-	console.log("No subreddit detected. Please use the -r flag to provide a date.");
-
-	process.exit();
-
+if (args.indexOf('-r') > -1) {
+	subreddit = args[args.indexOf('-r') + 1];
+} else {
+	throw new Error("No subreddit detected. Please use the -r flag to provide a date.");
 }
 
-var startDate = Math.floor(Date.UTC(year, month, day, 0, 0, 0)/1000);
+startDate = Math.floor( Date.UTC(year, month, day, 0, 0, 0) / 1000 );
+endDate = Math.floor( Date.UTC(year, month, day, 23, 0, 0) / 1000 );
+stringArray = [
+	'/r/',
+	subreddit,
+	'/search.json?rank=score&syntax=cloudsearch&restrict_sr=on&q=timestamp%3A',
+	startDate,
+	'..',
+	endDate,
+];
+options = {
+	hostname: 'reddit.com',
+	port: 443,
+	path: stringArray.join("")
+};
 
-var endDate = Math.floor(Date.UTC(year, month, day, 23, 0, 0)/1000);
+request(options, function(error, response) {
+	var data;
+	if (error) throw(error);
 
-request("https://www.reddit.com/r/" + subreddit + "/search.json?rank=score&syntax=cloudsearch&restrict_sr=on&q=timestamp%3A" + startDate + ".." + endDate, function(err, res, body){
-
-	var data = JSON.parse(body).data.children.map(function(o) {
-
-	    return { subreddit: o.data.subreddit, id: o.data.id, author: o.data.author, name: o.data.name, score: o.data.score, subreddit_id: o.data.subreddit_id, downs: o.data.downs, ups: o.data.ups, permalink: "https://www.reddit.com" + o.data.permalink, created: o.data.created, url: o.data.url, title: o.data.title, num_comments: o.data.num_comments, subreddit_type: o.data.subreddit_type };
-	
-	});
+	data = JSON.parse(response)
+		.data.children.map(function(o) {
+			o.data.permalink = "https://www.reddit.com" + o.data.permalink;
+			return o.data;
+		});
 	
 	console.log(data);
-
 });
